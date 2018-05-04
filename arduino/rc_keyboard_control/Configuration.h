@@ -1,0 +1,3 @@
+//Initial command
+String command = "";
+

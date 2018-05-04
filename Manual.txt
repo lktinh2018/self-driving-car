@@ -1,0 +1,17 @@
+Requirement
+    + Python 3
+    + pip3
+    + pynput (lib)
+    + serial
+
+Port meaning:
+    + RC Keyboard Server: 1111
+
+Control signal:
+    + Stop:             0
+    + Forward:          1
+    + Reverse:          2
+    + Forward Left:     3
+    + ForwardRight:     4
+    + Reverse Left:     5
+    + Reverse Right:    6
