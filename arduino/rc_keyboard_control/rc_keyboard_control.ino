@@ -2,6 +2,7 @@
 
 void setup() {
   initSerial();
+  initController();
 }
 
 void loop() {

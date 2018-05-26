@@ -1,17 +1,15 @@
 void initSerial() {
-  Serial.begin(115200);
+  Serial.begin(500000);
 }
 
 void loopSerial() {
   while(Serial.available()) {
     char inChar = (char)Serial.read();
-    command += inChar;
+    data += inChar;
     if(inChar == '\n') {
-      executeCommand(command);
-      command = "";
+      executeCommand(data);
+      data = "";
     }
   }
-//  Serial.println("Hello");
-//  delay(1000);
 }
 

@@ -2,43 +2,44 @@ import socket
 import threading
 import serial
 
-def handleClient(c, a, p):
-    print("Connection from :", a, ":", str(p))
-    while True:
-        data = c.recv(1024).decode()
-        ser.write(data)
-        if data == "1":
-            print("Forward")
-        elif data == "2":
-            print("Reverse")
-        elif data == "3":
-            print("Forward Left")
-        elif data == "4":
-            print("Forward Right")
-        elif data == "5":
-            print("Reverse Left")
-        elif data == "6":
-            print("Reverse Right")
-        elif data == "0":
-            print("Stop")
-        
-        if data == "EXIT":
-            print("Close socket client")
-            break
-    c.close()
-    return
+class RCKeyboardServer(object):
+    
+    def __init__(self):
+        self.initSerial()
+        self.initSocketServer()
+    
+    def initSocketServer(self):
+        port = 1111
+        serverSocket = socket.socket( socket.AF_INET, socket.SOCK_STREAM)
+        serverSocket.setsockopt( socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+        serverSocket.bind(('', port))
+        serverSocket.listen(0)
+        print("Set up rc keyboard server successful.")
 
-#Set Up Serial
-ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)
+        while True:
+            c, (a, p) = serverSocket.accept()
+            t = threading.Thread(target = self.handleClient, args=(c, a, p))
+            t.start()
 
-#Set Up Socket Server
-port = 1111
-connection = socket.socket( socket.AF_INET, socket.SOCK_STREAM)
-connection.setsockopt( socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-connection.bind(('', port))
-connection.listen(0)
-print("Set up rc keyboard server successful.")
-while True:
-    c, (a, p) = connection.accept()
-    t = threading.Thread( target=handleClient, args=(c, a, p))
-    t.start()
+    def initSerial(self):
+        ser = serial.Serial('/dev/ttyACM0', 500000, timeout=1)
+        self.serial = ser
+
+    def handleClient(self, c, a, p):
+        print("Connection from :", a, ":", str(p))
+        while True:
+            data = c.recv(2).decode()
+            print(data)
+            data += "\r\n"
+            data = data.encode()
+            self.serial.write(data)
+            
+            if data == "EXIT":
+                print("Close socket client")
+                break
+        c.close()
+        return
+
+#Main Function
+if __name__ == '__main__':
+    RCKeyboardServer()
