@@ -8,7 +8,7 @@ class CameraClient(object):
         self.initSocketClient()
 
     def initSocketClient(self):
-        host = "192.168.20.13"
+        host = "192.168.43.232"
         port = 2222
         clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         clientSocket.connect((host, port))
