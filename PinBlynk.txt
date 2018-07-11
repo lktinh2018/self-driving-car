@@ -1,4 +1,0 @@
-Virtual pin:
-	+ V0	Auto Mode
-	+ V1	Buzzer
-	
