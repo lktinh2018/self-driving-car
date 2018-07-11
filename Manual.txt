@@ -23,3 +23,13 @@ Control signal:
 	Direction	D12		        D13
 	PWM		    D10		        D11
 	Buzzer		D4		        D4
+
+
+Blynk virtual pin:
+	+ V0	Auto Mode
+	+ V1	Buzzer
+	+ V2	Speed
+	+ V3	X Axis
+	+ V4	Y Axis
+	
+
