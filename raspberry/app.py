@@ -7,7 +7,6 @@ class App(object):
     def __init__(self):
         self.initSerial()
         self.initSocketServer()
-        self.initBlynk()
     
     def initSerial(self):
         ser = serial.Serial('/dev/ttyACM0', 500000, timeout=1)
