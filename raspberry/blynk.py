@@ -36,3 +36,5 @@ class Blynk(object):
 #Main Function
 if __name__ == '__main__':
     Blynk()
+    print("Hello")
+    sleep(3)
