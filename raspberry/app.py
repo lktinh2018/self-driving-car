@@ -11,8 +11,8 @@ class App():
     blynkObj = 0
     serverSocket = 0
     serial = 0
-    xAxis = 0 
-    yAxis = 0
+    xAxis = -1
+    yAxis = -1
 
     def __init__(self):
         self.initSerial()
@@ -68,14 +68,29 @@ class App():
         @App.blynkObj.VIRTUAL_WRITE(1)
         def buzzerHandler(value):
             print("Buzz !!!")
+<<<<<<< HEAD
             if value=="1":
                 signal = "7"
             signal += "\r\n"
             signal = signal.encode()
             self.serial.write(signal)
+=======
+            signal = -1
+                
+            if value=="1":
+                signal = "7"
+                signal += "\r\n"
+                signal = signal.encode()
+                self.serial.write(signal)
+>>>>>>> master
 
         @App.blynkObj.VIRTUAL_WRITE(2)
         def speedHandler(value):
+            signal = "S" + value;
+            signal += "\r\n"
+            signal = signal.encode()
+            self.serial.write(signal)
+            print(signal);
             print('Current V2 value: {}'.format(value))
 
         @App.blynkObj.VIRTUAL_WRITE(3)
@@ -99,6 +114,7 @@ class App():
         while True:
             x = int(App.xAxis)
             y = int(App.yAxis)
+<<<<<<< HEAD
             signal = 0
             print("X= {}  Y= {}".format(x, y))
             if x==100 and y==100:
@@ -130,6 +146,39 @@ class App():
             signal = signal.encode()
             self.serial.write(signal)
             sleep(0.01)
+=======
+            if x!= -1 and y!=-1:
+                signal = -1
+                if x==100 and y==100:
+                    print("STOP")
+                    signal = "0"
+                
+                if y > 100:
+                    if 50<=x and x<=150:
+                        print("Forward")
+                        signal = "1"
+                    elif 0<=x and x<50:
+                        print("Forward Left")
+                        signal = "3"
+                    elif 150<x and x<=200:
+                        print("Forward Right")
+                        signal = "4"
+                elif y < 100:
+                    if 50<=x and x<=150:
+                        print("Reverse")
+                        signal = "2"
+                    elif 0<=x and x<50:
+                        print("Reverse Left")
+                        signal = "5"
+                    elif 150 < x and x<=200:
+                        print("Reverse Right")
+                        signal = "6"
+                        
+                if signal != -1:
+                    signal += "\r\n"
+                    signal = signal.encode()
+                    self.serial.write(signal)
+>>>>>>> master
 
 
 
