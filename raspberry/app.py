@@ -3,22 +3,25 @@ import threading
 import serial
 import threading
 import BlynkLib
+from time import sleep
 
 class App():
 
     BLYNK_AUTH = '2cd11bf758264c46a57c09d9f9dc29f9'
     blynkObj = 0
     serverSocket = 0
-    
+    serial = 0
+    xAxis = 0 
+    yAxis = 0
+
     def __init__(self):
         self.initSerial()
-        self.initSocketServer()
+        #self.initSocketServer()
         self.initBlynk()
 
-        
     def initSerial(self):
         ser = serial.Serial('/dev/ttyACM0', 500000, timeout=1)
-        self.serial = ser
+        App.serial = ser
         print("Set up serial communication successful.")
 
     def initSocketServer(self):
@@ -26,13 +29,12 @@ class App():
         serverSocket = socket.socket( socket.AF_INET, socket.SOCK_STREAM)
         serverSocket.setsockopt( socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
         serverSocket.bind(('', port))
-        serverSocket.listen(5)
+        serverSocket.listen(0)
         App.serverSocket = serverSocket
         
         serverThread = threading.Thread(target = self.serverHandler, args=())
         serverThread.start()
         print("Set up rc keyboard server successful.")
-
         
     def serverHandler(self):
         serverSocket = App.serverSocket
@@ -65,7 +67,12 @@ class App():
 
         @App.blynkObj.VIRTUAL_WRITE(1)
         def buzzerHandler(value):
-            print('Current V1 value: {}'.format(value))
+            print("Buzz !!!")
+            if value=="1":
+                signal = "7"
+            signal += "\r\n"
+            signal = signal.encode()
+            self.serial.write(signal)
 
         @App.blynkObj.VIRTUAL_WRITE(2)
         def speedHandler(value):
@@ -73,18 +80,56 @@ class App():
 
         @App.blynkObj.VIRTUAL_WRITE(3)
         def xAxisHandler(value):
-            print('Current V3 value: {}'.format(value))
+            App.xAxis = value
 
         @App.blynkObj.VIRTUAL_WRITE(4)
         def yAxisHandler(value):
-            print('Current V4 value: {}'.format(value))
+            App.yAxis = value
 
         t = threading.Thread(target = self.blynkHandler, args=())
         t.start()
+
+        t2 = threading.Thread(target = self.sendSignalHandler, args=())
+        t2.start()
         
-    
     def blynkHandler(self):
         App.blynkObj.run()
+
+    def sendSignalHandler(self):
+        while True:
+            x = int(App.xAxis)
+            y = int(App.yAxis)
+            signal = 0
+            print("X= {}  Y= {}".format(x, y))
+            if x==100 and y==100:
+                print("STOP")
+                signal = 0
+            
+            if y > 100:
+                if 50<=x and x<=150:
+                    print("Forward")
+                    signal = 1
+                elif 0<=x and x<50:
+                    print("Forward Left")
+                    signal = 3
+                elif 150<x and x<=200:
+                    print("Forward Right")
+                    signal = 4
+            elif y < 100:
+                if 50<=x and x<=150:
+                    print("Reverse")
+                    signal = 2
+                elif 0<=x and x<50:
+                    print("Reverse Left")
+                    signal = 5
+                elif 150 < x and x<=200:
+                    print("Reverse Right")
+                    signal =6
+
+            signal += "\r\n"
+            signal = signal.encode()
+            self.serial.write(signal)
+            sleep(0.01)
 
 
 
@@ -92,6 +137,7 @@ class App():
 #Main Function
 if __name__ == '__main__':
     App()
+
 
 
 
