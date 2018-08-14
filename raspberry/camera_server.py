@@ -28,7 +28,7 @@ class CameraServer(object):
         connection = c.makefile('wb')
         try:
             with picamera.PiCamera() as camera:
-                camera.resolution = (640, 480)
+                camera.resolution = (200, 200)
                 camera.framerate = 10
                 time.sleep(2)
 
