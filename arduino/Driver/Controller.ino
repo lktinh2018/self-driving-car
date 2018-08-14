@@ -8,10 +8,7 @@ void initController() {
 }
 
 void executeCommand(String data) {
-  Serial.println(data);
   command = data[0];
-  Serial.println();
-  Serial.println(command);
 
   if(command == "0") {
     stop();
@@ -31,7 +28,6 @@ void executeCommand(String data) {
     beep();
   } else if(command == "S") {
     SPEED = data.substring(1).toInt();
-    Serial.println(SPEED);
   }
   
 

@@ -10,8 +10,22 @@ class App(object):
         self.initSocketServer()
 
     def initSerial(self):
-        ser = serial.Serial('/dev/ttyACM0', 500000, timeout=1)
-        self.serial = ser
+        # ser = serial.Serial('/dev/ttyACM0', 500000, timeout=1)
+        # self.serial = ser
+        # print("Set up serial communication successful.")
+
+        ser = serial.Serial()
+        ser.baudrate = 500000
+        try:
+            ser.port = '/dev/ttyUSB1'
+            ser.open()
+        except serial.serialutil.SerialException :
+            try:
+                ser.port = '/dev/ttyUSB0'
+                ser.open()
+            except serial.serialutil.SerialException :
+                ser.port = 'COM4'
+                ser.open()
         print("Set up serial communication successful.")
 
     def initSocketServer(self):
