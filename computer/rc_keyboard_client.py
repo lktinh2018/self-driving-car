@@ -12,7 +12,7 @@ class RCKeyboardClient(object):
         self.initKeyboardEvent()
 
     def initClient(self):          
-        host = "192.168.1.101"
+        host = "raspberrypi"
         port = 9999
         clientSocket = socket.socket()
         clientSocket.connect((host, port))

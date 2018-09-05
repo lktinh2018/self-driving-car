@@ -8,7 +8,7 @@ class CameraClient(object):
         self.initSocketClient()
 
     def initSocketClient(self):
-        host = "192.168.43.232"
+        host = "raspberrypi"
         port = 2222
         clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         clientSocket.connect((host, port))
@@ -18,9 +18,10 @@ class CameraClient(object):
             print("Streaming...")
             stream_bytes = ' '
             while True:
+                stream_bytes = b""
                 stream_bytes += streamSocket.read(1024)
-                first = stream_bytes.find('\xff\xd8')
-                last = stream_bytes.find('\xff\xd9')
+                first = stream_bytes.find(b'\xff\xd8')
+                last = stream_bytes.find(b'\xff\xd9')
                 if first != -1 and last != -1:
                     jpg = stream_bytes[first:last + 2]
                     stream_bytes = stream_bytes[last + 2:]
