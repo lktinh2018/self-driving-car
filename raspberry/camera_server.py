@@ -7,7 +7,10 @@ import picamera
 
 class CameraServer(object):
     def __init__(self):
+      try:
         self.initSocketServer()
+      except:
+        self.serverSocket.close()
 
     
     def initSocketServer(self):
@@ -28,7 +31,7 @@ class CameraServer(object):
         connection = c.makefile('wb')
         try:
             with picamera.PiCamera() as camera:
-                camera.resolution = (200, 200)
+                camera.resolution = (128, 128)
                 camera.framerate = 10
                 time.sleep(2)
 
