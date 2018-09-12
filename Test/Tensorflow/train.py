@@ -17,7 +17,7 @@ import json
 matplotlib.style.use('ggplot')
 
 data_dir = '../train_data/1'
-data_csv = '/driving_log.csv'
+data_csv = '../train_data/driving_log.csv'
 model_json = 'model.json'
 model_weights = 'model.h5'
 
