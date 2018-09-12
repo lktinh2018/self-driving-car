@@ -19,9 +19,9 @@ Control signal:
 
 
 298 Shield Pinout:
-	Function	Channel A Pin	Channel B Pin
+	Function	Channel A Pin		Channel B Pin
 	Direction	D12		        D13
-	PWM		    D10		        D11
+	PWM		D10		        D11
 	Buzzer		D4		        D4
 
 
