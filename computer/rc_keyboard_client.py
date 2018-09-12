@@ -101,6 +101,9 @@ class RCKeyboardClient(object):
             self.clientSocket.sendall("EXIT".encode())
             self.clientSocket.close()
             return False
-
+        
+        if key == keyboard.Key.shift_l:
+            print("Active autonomous driving mode")
+            self.clientSocket.sendall("8".encode())
 if __name__ == '__main__':
     RCKeyboardClient()
