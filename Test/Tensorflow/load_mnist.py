@@ -2,6 +2,7 @@ import keras
 from keras.datasets import mnist
 from keras import backend as K
 from keras.models import load_model
+import time
 
 batch_size = 128
 num_classes = 10
@@ -42,9 +43,11 @@ new_model = load_model('MNIST.h5')
 # print('Test loss:', score[0])
 # print('Test accuracy:', score[1])
 
-
+print("Ready !")
+start = time.time()
 new_img = x_test[0]
 new_img = new_img.reshape((1, 28, 28, 1))
-
 result = new_model.predict_classes(new_img)
+end = time.time()
+print("Time elapse: ", end - start)
 print(result)
