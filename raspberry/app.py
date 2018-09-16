@@ -20,6 +20,9 @@ class App(object):
     signal = ""
     done = False
 
+    # Auto mode flag
+    autoMode = False
+    
     def __init__(self):
         self.getInfo()
         self.initSerial()
@@ -102,9 +105,6 @@ class App(object):
                 with open(save_path, "wb") as f:
                     f.write(stream.read(num_of_bytes))
                 self.done = True
-                print("Captured.")
-            else: 
-                print("ABC")
             # Empty the stream
             stream.seek(0)
             stream.truncate()
