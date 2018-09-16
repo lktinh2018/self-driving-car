@@ -1,6 +1,7 @@
 import keras
 from keras.datasets import mnist
 from keras import backend as K
+from keras.models import load_model
 
 batch_size = 128
 num_classes = 10
@@ -34,7 +35,7 @@ y_train = keras.utils.to_categorical(y_train, num_classes)
 y_test = keras.utils.to_categorical(y_test, num_classes)
 
 # Load model
-new_model = keras.models.load_model('MNIST.h5')
+new_model = load_model('MNIST.h5')
 new_model.summary()
 score = new_model.evaluate(x_test, y_test, verbose=0)
 print('Test loss:', score[0])

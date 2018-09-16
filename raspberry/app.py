@@ -137,7 +137,7 @@ class App(object):
         handleClientThread.start()
     
     def handleClient(self, c, a, p):
-        print("\n Connection from :", a, ":", str(p))
+        print("\nConnection from :", a, ":", str(p))
         while True:
             data = c.recv(2).decode()
             self.signal = data[0]
