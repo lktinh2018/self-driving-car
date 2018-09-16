@@ -73,6 +73,7 @@ class App(object):
               break;
           else:
               print("Wrong input, Plese enter 'y' or 'n' character.\n\n")
+              
     def initCamera(self):
         camera = PiCamera()
         camera.resolution = (128, 128)
