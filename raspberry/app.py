@@ -18,11 +18,16 @@ class App(object):
 
     # Current control signal
     signal = ""
+
+    # Capture flag
     done = False
 
     # Auto mode flag
     autoMode = False
-    
+
+    # Server socket var
+    serverSocket = ""
+
     def __init__(self):
         self.getInfo()
         self.initSerial()
@@ -121,7 +126,6 @@ class App(object):
         serverSocket.bind(("", port))
         serverSocket.listen(0)
         self.serverSocket = serverSocket
-        self.serverSocket = serverSocket
         print("Set up socket server successful.")
         serverThread = threading.Thread(target = self.handleSocketServer)
         serverThread.start()
@@ -146,14 +150,17 @@ class App(object):
                 print("Active autonomous mode")
                 self.autoMode = True
 
+            if data == "EX":
+                print("Close socket server")
+                break
+
             data += "\r\n"
             data = data.encode()
             self.serial.write(data)
             self.done = False
-            if data == "EXIT":
-                print("Close socket client")
-                break
+
         c.close()
+        self.serverSocket.close()
         return
 
 # Main Function

@@ -20,10 +20,11 @@ class RCKeyboardClient(object):
         print("Connected to server.")
     
     def initKeyboardEvent(self):
-        with keyboard.Listener(on_press = self.onPress, on_release = self.onRelease) as listener:
-            listener.join()
         print("Init RC Keyboard Successful !")
         print("Press ESC To Quit Program...")   
+        with keyboard.Listener(on_press = self.onPress, on_release = self.onRelease) as listener:
+            listener.join()
+
 
     def onPress(self, key):
         print("\n")
@@ -98,12 +99,13 @@ class RCKeyboardClient(object):
 
         if key == keyboard.Key.esc:
             print("\nExit program. Goodbye !!!")
-            self.clientSocket.sendall("EXIT".encode())
+            self.clientSocket.sendall("EX".encode())
             self.clientSocket.close()
             return False
         
         if key == keyboard.Key.shift_l:
             print("Active autonomous driving mode")
             self.clientSocket.sendall("8".encode())
+
 if __name__ == '__main__':
     RCKeyboardClient()
