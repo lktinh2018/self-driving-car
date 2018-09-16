@@ -86,7 +86,7 @@ class App(object):
 
     def handleCamera(self):
         stream = io.BytesIO()
-        for count, foo in enumerate(self.camera.capture_continuous(stream, format=".jpg", bayer=True)):
+        for count, foo in enumerate(self.camera.capture_continuous(stream, format="jpeg", bayer=True)):
             # Save stream contents to file
             if (self.done and ((self.signal == "1" and self.c0) or (self.signal == "3" and self.c1) or (self.signal == "4" and self.c2)) ) :
                 # Get number of bytes in the stream
