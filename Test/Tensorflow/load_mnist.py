@@ -27,8 +27,8 @@ x_test = x_test.astype('float32')
 x_train /= 255
 x_test /= 255
 print('x_train shape:', x_train.shape)
-print(x_train.shape[0], 'train samples')
-print(x_test.shape[0], 'test samples')
+# print(x_train.shape[0], 'train samples')
+# print(x_test.shape[0], 'test samples')
 
 # convert class vectors to binary class matrices
 y_train = keras.utils.to_categorical(y_train, num_classes)
@@ -36,10 +36,11 @@ y_test = keras.utils.to_categorical(y_test, num_classes)
 
 # Load model
 new_model = load_model('MNIST.h5')
-new_model.summary()
-score = new_model.evaluate(x_test, y_test, verbose=0)
-print('Test loss:', score[0])
-print('Test accuracy:', score[1])
+
+# new_model.summary()
+# score = new_model.evaluate(x_test, y_test, verbose=0)
+# print('Test loss:', score[0])
+# print('Test accuracy:', score[1])
 
 
 new_img = x_test[0]
