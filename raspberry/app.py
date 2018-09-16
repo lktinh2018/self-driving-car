@@ -30,49 +30,49 @@ class App(object):
     def getInfo(self):
       c0 = c1 = c2 = ""
       while True:
-          print("Number images class 0 (forward):", len([f for f in os.listdir(self.CLASS_0_PATH) if f.endswith(".jpg")]) )
-          print("Do you want to continue capture image class 0 (y/n) ?")
-          c0 = input()
-          if c0 == "y" or c0 == "Y":
-              print("You select continue capture class 0.\n\n")
-              self.c0 = True
-              break;
-          elif c0 == "n" or c0 == "N": 
-              print("You select NOT continue capture class 0.\n\n")
-              self.c0 = False
-              break;
-          else:
-              print("Wrong input, Plese enter 'y' or 'n' character.\n\n")
+        print("Number images class 0 (forward):", len([f for f in os.listdir(self.CLASS_0_PATH) if f.endswith(".jpg")]) )
+        print("Do you want to continue capture image class 0 (y/n) ?")
+        c0 = input()
+        if c0 == "y" or c0 == "Y":
+            print("You select continue capture class 0.\n\n")
+            self.c0 = True
+            break;
+        elif c0 == "n" or c0 == "N": 
+            print("You select NOT continue capture class 0.\n\n")
+            self.c0 = False
+            break;
+        else:
+            print("Wrong input, Plese enter 'y' or 'n' character.\n\n")
 
       while True:    
-          print("Number images class 1 (turn left):", len([f for f in os.listdir(self.CLASS_1_PATH) if f.endswith("jpg")]) )
-          print("Do you want to continue capture image class 1 (y/n) ?")
-          c1 = input()
-          if c1 == "y" or c1 == "Y":
-              print("You select continue capture class 1.\n\n")
-              self.c1 = True
+        print("Number images class 1 (turn left):", len([f for f in os.listdir(self.CLASS_1_PATH) if f.endswith("jpg")]) )
+        print("Do you want to continue capture image class 1 (y/n) ?")
+        c1 = input()
+        if c1 == "y" or c1 == "Y":
+            print("You select continue capture class 1.\n\n")
+            self.c1 = True
+            break;
+        elif c1 == "n" or c1 == "N": 
+            print("You select NOT continue capture class 1.\n\n")
+            self.c1 = False
+            break;
+        else:
+            print("Wrong input, Plese enter 'y' or 'n' character.\n\n")
+
+        while True:    
+          print("Number images class 2 (turn right):", len([f for f in os.listdir(self.CLASS_2_PATH) if f.endswith("jpg")]) )
+          print("Do you want to continue capture image class 2 (y/n) ?")
+          c2 = input()
+          if c2 == "y" or c2 == "Y":
+              print("You select continue capture class 2.\n\n")
+              self.c2 = True
               break;
-          elif c1 == "n" or c1 == "N": 
-              print("You select NOT continue capture class 1.\n\n")
-              self.c1 = False
+          elif c2 == "n" or c2 == "N": 
+              print("You select NOT continue capture class 2.\n\n")
+              self.c2 = False
               break;
           else:
               print("Wrong input, Plese enter 'y' or 'n' character.\n\n")
-
-        while True:    
-            print("Number images class 2 (turn right):", len([f for f in os.listdir(self.CLASS_2_PATH) if f.endswith("jpg")]) )
-            print("Do you want to continue capture image class 2 (y/n) ?")
-            c2 = input()
-            if c2 == "y" or c2 == "Y":
-                print("You select continue capture class 2.\n\n")
-                self.c2 = True
-                break;
-            elif c2 == "n" or c2 == "N": 
-                print("You select NOT continue capture class 2.\n\n")
-                self.c2 = False
-                break;
-            else:
-                print("Wrong input, Plese enter 'y' or 'n' character.\n\n")
     def initCamera(self):
         camera = PiCamera()
         camera.resolution = (128, 128)
