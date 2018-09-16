@@ -102,12 +102,13 @@ class App(object):
                 with open(save_path, "wb") as f:
                     f.write(stream.read(num_of_bytes))
                 self.done = True
-                # Empty the stream
-                stream.seek(0)
-                stream.truncate()
                 print("Captured.")
             else: 
                 print("ABC")
+            # Empty the stream
+            stream.seek(0)
+            stream.truncate()
+
             
     def initSerial(self):
         ser = serial.Serial("/dev/ttyACM0", 115200, timeout=1)
