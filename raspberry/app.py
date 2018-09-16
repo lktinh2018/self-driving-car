@@ -88,7 +88,7 @@ class App(object):
         stream = io.BytesIO()
         for count, foo in enumerate(self.camera.capture_continuous(stream, format="jpeg", bayer=True)):
             # Save stream contents to file
-            if (self.done and ((self.signal == "1" and self.c0) or (self.signal == "3" and self.c1) or (self.signal == "4" and self.c2)) ) :
+            if ( (self.done == False) and ((self.signal == "1" and self.c0) or (self.signal == "3" and self.c1) or (self.signal == "4" and self.c2)) ) :
                 # Get number of bytes in the stream
                 num_of_bytes = stream.tell()
                 # Rewind the stream to start
@@ -105,6 +105,9 @@ class App(object):
                 # Empty the stream
                 stream.seek(0)
                 stream.truncate()
+                print("Captured.")
+            else: 
+                print("ABC")
             
     def initSerial(self):
         ser = serial.Serial("/dev/ttyACM0", 115200, timeout=1)
