@@ -19,8 +19,7 @@ class App(object):
     # Current control signal
     signal = ""
     done = False
-    autoMode = False
-    
+
     def __init__(self):
         self.getInfo()
         self.initSerial()
@@ -88,7 +87,7 @@ class App(object):
 
     def handleCamera(self):
       stream = io.BytesIO()
-      for count, foo in enumerate(self.camera.capture_continuous( stream, format='jpg', bayer=True)):
+      for count, foo in enumerate(self.camera.capture_continuous(stream, format="jpg", bayer=True)):
         # Save stream contents to file
         if (self.done and (self.signal == "1" and self.c0) or (self.signal == "3" and self.c1) or (self.signal == "4" and self.c2)) :
           # Get number of bytes in the stream
@@ -101,7 +100,7 @@ class App(object):
             save_path = "../train_data/1/img%d.jpg" % count
           elif self.signal == "4":
             save_path = "../train_data/2/img%d.jpg" % count
-          with open(save_path, 'wb') as f:
+          with open(save_path, "wb") as f:
             f.write(stream.read(num_of_bytes))
           self.done = True
           # Empty the stream
@@ -110,7 +109,7 @@ class App(object):
             
 
     def initSerial(self):
-        ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)
+        ser = serial.Serial("/dev/ttyACM0", 115200, timeout=1)
         self.serial = ser
         print("Set up serial communication successful.")
 
@@ -118,7 +117,7 @@ class App(object):
     def initSocketServer(self):
         port = 9999
         serverSocket = socket.socket()
-        serverSocket.bind(('', port))
+        serverSocket.bind(("", port))
         serverSocket.listen(0)
         self.serverSocket = serverSocket
         self.serverSocket = serverSocket
@@ -160,5 +159,5 @@ class App(object):
 
 
 #Main Function
-if __name__ == '__main__':
+if __name__ == "__main__":
    App()
