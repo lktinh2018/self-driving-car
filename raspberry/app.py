@@ -31,7 +31,7 @@ class App(object):
 
     def handleCamera(self):
       stream = io.BytesIO()
-      for count, foo in enumerate(self.camera.capture_continuous( stream, format='png', bayer=self.bayer_mode)):
+      for count, foo in enumerate(self.camera.capture_continuous( stream, format='jpg', bayer=self.bayer_mode)):
             # Get number of bytes in the stream
             num_of_bytes = stream.tell()
             # Rewind the stream to start
