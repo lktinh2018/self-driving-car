@@ -1,3 +1,0 @@
-Sources for Raspberry Pi Camera v2 Print Bed Mount
-
-Raspberry Pi Camera Mount (http://www.thingiverse.com/thing:1003252)
