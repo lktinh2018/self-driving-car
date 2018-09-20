@@ -33,6 +33,10 @@ class App(object):
         self.initSerial()
         self.initCamera()
         self.initSocketServer()
+        self.handleCar()
+
+    def handleCar(self):
+        print("ABCXYZZZZZZZZZZZZZz")
 
     def getInfo(self):
       c0 = c1 = c2 = ""
@@ -95,24 +99,25 @@ class App(object):
     def handleCamera(self):
         stream = io.BytesIO()
         for count, foo in enumerate(self.camera.capture_continuous(stream, format="jpeg", bayer=True)):
-            # Save stream contents to file
-            if ( (self.done == False) and ((self.signal == "1" and self.c0) or (self.signal == "3" and self.c1) or (self.signal == "4" and self.c2)) ) :
-                # Get number of bytes in the stream
-                num_of_bytes = stream.tell()
-                # Rewind the stream to start
+            if not self.autoMode:
+                # Save stream contents to file
+                if ( (self.done == False) and ((self.signal == "1" and self.c0) or (self.signal == "3" and self.c1) or (self.signal == "4" and self.c2)) ) :
+                    # Get number of bytes in the stream
+                    num_of_bytes = stream.tell()
+                    # Rewind the stream to start
+                    stream.seek(0)
+                    if self.signal == "1":
+                        save_path = "../train_data/0/img%d.jpg" % count
+                    elif self.signal == "3":
+                        save_path = "../train_data/1/img%d.jpg" % count
+                    elif self.signal == "4":
+                        save_path = "../train_data/2/img%d.jpg" % count
+                    with open(save_path, "wb") as f:
+                        f.write(stream.read(num_of_bytes))
+                    self.done = True
+                # Empty the stream
                 stream.seek(0)
-                if self.signal == "1":
-                    save_path = "../train_data/0/img%d.jpg" % count
-                elif self.signal == "3":
-                    save_path = "../train_data/1/img%d.jpg" % count
-                elif self.signal == "4":
-                    save_path = "../train_data/2/img%d.jpg" % count
-                with open(save_path, "wb") as f:
-                    f.write(stream.read(num_of_bytes))
-                self.done = True
-            # Empty the stream
-            stream.seek(0)
-            stream.truncate()
+                stream.truncate()
 
             
     def initSerial(self):
@@ -154,10 +159,11 @@ class App(object):
                 print("Close socket server")
                 break
 
-            data += "\r\n"
-            data = data.encode()
-            self.serial.write(data)
-            self.done = False
+            if not self.autoMode:
+                data += "\r\n"
+                data = data.encode()
+                self.serial.write(data)
+                self.done = False
 
         c.close()
         self.serverSocket.close()
