@@ -43,7 +43,7 @@ class App(object):
                 self.signal += "\r\n"
                 self.signal = self.signal.encode()
                 self.serial.write(self.signal)
-                sleep(0.1)
+                sleep(1)
 
     def getInfo(self):
       c0 = c1 = c2 = ""
@@ -106,6 +106,7 @@ class App(object):
     def handleCamera(self):
         while True:
             if not self.autoMode:
+                print("Hello Camera")
                 stream = io.BytesIO()
                 for count, foo in enumerate(self.camera.capture_continuous(stream, format="jpeg", bayer=True)):
                     # Save stream contents to file
@@ -171,8 +172,6 @@ class App(object):
                 self.signal = self.signal.encode()
                 self.serial.write(self.signal)
                 self.done = False
-
-
 
         c.close()
         self.serverSocket.close()
