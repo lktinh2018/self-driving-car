@@ -19,6 +19,9 @@ class App(object):
     # Current control signal
     signal = ""
 
+    # Camera object
+    camera = ""
+
     # Capture flag
     done = False
 
@@ -98,7 +101,7 @@ class App(object):
         camera.framerate = 10
         camera.start_preview()
         self.camera = camera
-        sleep(1)
+        sleep(0.5)
         print("Set up camera successful.")
         t = threading.Thread(target = self.handleCamera)
         t.start()
@@ -124,6 +127,10 @@ class App(object):
                 # Empty the stream
                 stream.seek(0)
                 stream.truncate()
+            else:
+                print("DONE:", self.done)
+                print("autoMODE:" , self.autoMode)
+                sleep(1)
 
             
     def initSerial(self):
