@@ -121,9 +121,9 @@ class App(object):
                 with open(save_path, "wb") as f:
                     f.write(stream.read(num_of_bytes))
                 self.done = True
-            # Empty the stream
-            stream.seek(0)
-            stream.truncate()
+                # Empty the stream
+                stream.seek(0)
+                stream.truncate()
 
             
     def initSerial(self):
