@@ -38,12 +38,7 @@ class App(object):
     def handleCar(self):
         print("Set up car handling Successful")
         while True:
-            if not self.autoMode:
-                self.signal += "\r\n"
-                self.signal = self.signal.encode()
-                self.serial.write(self.signal)
-                self.done = False
-            else:
+            if self.autoMode:
                 self.signal = "3"
                 self.signal += "\r\n"
                 self.signal = self.signal.encode()
@@ -159,8 +154,11 @@ class App(object):
         print("\nConnection from :", a, ":", str(p))
         while True:
             data = c.recv(2).decode()
+            if data == "EX":
+                print("Close socket server")
+                break
+
             self.signal = data[0]
-            
             if self.signal == "8":
               if self.autoMode:
                 print("Deactive autonomous mode")
@@ -168,10 +166,14 @@ class App(object):
               else:
                 print("Active autonomous mode")
                 self.autoMode = True
+            
+            if not self.autoMode:
+                self.signal += "\r\n"
+                self.signal = self.signal.encode()
+                self.serial.write(self.signal)
+                self.done = False
 
-            if data == "EX":
-                print("Close socket server")
-                break
+
 
         c.close()
         self.serverSocket.close()
