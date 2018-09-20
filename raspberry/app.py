@@ -33,7 +33,7 @@ class App(object):
         self.initSerial()
         self.initCamera()
         self.initSocketServer()
-        self.handleCar()
+        #self.handleCar()
 
     def handleCar(self):
         print("Set up car handling Successful")
@@ -48,7 +48,7 @@ class App(object):
     def getInfo(self):
       c0 = c1 = c2 = ""
       while True:
-        print("Number images class 0 (forward):", len([f for f in os.listdir(self.CLASS_0_PATH) if f.endswith(".jpg")]) )
+        print("\nNumber images class 0 (forward):", len([f for f in os.listdir(self.CLASS_0_PATH) if f.endswith(".jpg")]) )
         print("Do you want to continue capture image class 0 (y/n) ?")
         c0 = input()
         if c0 == "y" or c0 == "Y":
