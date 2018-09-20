@@ -36,7 +36,19 @@ class App(object):
         self.handleCar()
 
     def handleCar(self):
-        print("ABCXYZZZZZZZZZZZZZz")
+        print("Init Handle Car Successful")
+        if not self.autoMode:
+            self.signal += "\r\n"
+            self.signal = self.signal.encode()
+            self.serial.write(self.signal)
+            self.done = False
+        else:
+            self.signal = "3"
+            self.signal += "\r\n"
+            self.signal = self.signal.encode()
+            self.serial.write(self.signal)
+            self.done = False
+            sleep(5)
 
     def getInfo(self):
       c0 = c1 = c2 = ""
@@ -159,12 +171,6 @@ class App(object):
             if data == "EX":
                 print("Close socket server")
                 break
-
-            if not self.autoMode:
-                data += "\r\n"
-                data = data.encode()
-                self.serial.write(data)
-                self.done = False
 
         c.close()
         self.serverSocket.close()
