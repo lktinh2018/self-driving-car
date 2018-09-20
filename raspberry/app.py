@@ -36,19 +36,20 @@ class App(object):
         self.handleCar()
 
     def handleCar(self):
-        print("Init Handle Car Successful")
-        if not self.autoMode:
-            self.signal += "\r\n"
-            self.signal = self.signal.encode()
-            self.serial.write(self.signal)
-            self.done = False
-        else:
-            self.signal = "3"
-            self.signal += "\r\n"
-            self.signal = self.signal.encode()
-            self.serial.write(self.signal)
-            self.done = False
-            sleep(5)
+        print("Set up car handling Successful")
+        while True:
+            if not self.autoMode:
+                self.signal += "\r\n"
+                self.signal = self.signal.encode()
+                self.serial.write(self.signal)
+                self.done = False
+            else:
+                self.signal = "3"
+                self.signal += "\r\n"
+                self.signal = self.signal.encode()
+                self.serial.write(self.signal)
+                self.done = False
+                sleep(5)
 
     def getInfo(self):
       c0 = c1 = c2 = ""
