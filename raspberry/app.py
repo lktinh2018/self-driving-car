@@ -43,8 +43,7 @@ class App(object):
                 self.signal += "\r\n"
                 self.signal = self.signal.encode()
                 self.serial.write(self.signal)
-                self.done = False
-                sleep(5)
+                sleep(0.1)
 
     def getInfo(self):
       c0 = c1 = c2 = ""
