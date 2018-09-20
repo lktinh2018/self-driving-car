@@ -127,10 +127,6 @@ class App(object):
                 # Empty the stream
                 stream.seek(0)
                 stream.truncate()
-            else:
-                print("DONE:", self.done)
-                print("autoMODE:" , self.autoMode)
-                sleep(1)
 
             
     def initSerial(self):
@@ -172,9 +168,7 @@ class App(object):
                 self.autoMode = True
             
             if not self.autoMode:
-                self.signal += "\r\n"
-                self.signal = self.signal.encode()
-                self.serial.write(self.signal)
+                self.serial.write( (self.signal + "\r\n").encode())
                 self.done = False
 
         c.close()
