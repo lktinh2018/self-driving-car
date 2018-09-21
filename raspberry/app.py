@@ -99,14 +99,14 @@ class App(object):
         camera.framerate = 10
         camera.start_preview()
         self.camera = camera
-        sleep(0.5)
+        sleep(2)
         print("Set up camera successful.")
         t = threading.Thread(target = self.handleCamera)
         t.start()
 
     def handleCamera(self):
         stream = io.BytesIO()
-        for count, foo in enumerate(self.camera.capture_continuous(stream, format="jpeg", bayer=True)):
+        for count, foo in enumerate(self.camera.capture_continuous(stream, format="jpeg")):
             if not self.autoMode :
                 # Save stream contents to file
                 if ( (self.done == False) and ((self.signal == "1" and self.c0) or (self.signal == "3" and self.c1) or (self.signal == "4" and self.c2)) ) :
