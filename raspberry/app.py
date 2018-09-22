@@ -160,6 +160,7 @@ class App(object):
             self.signal = data[0]
             if self.signal == "8":
               if self.autoMode:
+                self.serial.write(("0\r\n").encode())
                 print("Deactive autonomous mode")
                 self.autoMode = False
               else:
@@ -167,6 +168,7 @@ class App(object):
                 self.autoMode = True
             
             if not self.autoMode:
+                print(self.signal + "\r\n")
                 self.serial.write( (self.signal + "\r\n").encode())
                 self.done = False
 
