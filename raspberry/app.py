@@ -168,7 +168,6 @@ class App(object):
                 self.autoMode = True
             
             if not self.autoMode:
-                print(self.signal + "\r\n")
                 self.serial.write( (self.signal + "\r\n").encode())
                 self.done = False
 
