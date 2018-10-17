@@ -6,7 +6,8 @@ class RCKeyboardClient(object):
     #Temp var
     forward = False
     reverse = False
-    maxSpeed = False    
+    maxSpeed = False
+    autoMode = False   
     def __init__(self):
         self.initClient()
         self.initKeyboardEvent()
@@ -104,7 +105,10 @@ class RCKeyboardClient(object):
             return False
         
         if key == keyboard.Key.shift_l:
-            print("Active autonomous driving mode")
+            if self.autoMode:
+                print("Deactive autonomous driving mode")
+            else:
+                print("Active autonomous driving mode")
             self.clientSocket.sendall("8".encode())
 
 if __name__ == '__main__':
