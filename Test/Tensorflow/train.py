@@ -49,9 +49,9 @@ img_rows, img_cols = 28, 28
 num_classes = 10
 
 
-(x_train, y_train), (x_test, y_test) = mnist.load_data()
-# (x_train, y_train) = load_train()
-# (x_test,  y_test)  = load_test()
+#(x_train, y_train), (x_test, y_test) = mnist.load_data()
+(x_train, y_train) = load_train()
+(x_test,  y_test)  = load_test()
 x_train = np.expand_dims(x_train, -1)
 x_test  = np.expand_dims(x_test, -1)
 x_train = np.array(x_train, dtype=np.float32)
