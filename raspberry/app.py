@@ -1,29 +1,14 @@
-import socket
-import threading
-import serial
+import io, time, os, serial, socket, threading, keras,cv2
+from keras.models import load_model
 from picamera import PiCamera
 from time import sleep
-import io 
-import os
-
-# Libs for CNN
-import keras
-from keras.datasets import mnist
-from keras import backend as K
-from keras.models import load_model
-import time
-
-# Var for CNN
-batch_size = 128
-num_classes = 10
-epochs = 12
-
-# Input image dimensions
-img_rows, img_cols = 28, 28
-IMG_ROWS, IMG_COLS = 28, 28
+import numpy as np 
 
 class App(object):
-
+    
+    #Coming image
+    coming_img = ""
+    
     # Train data path
     CLASS_0_PATH = "../train_data/0/"
     CLASS_1_PATH = "../train_data/1/"
@@ -56,38 +41,24 @@ class App(object):
 
     def handleCar(self):
         print("Set up car handling successful")
-        # Load train and test sets
-        (x_train, y_train), (x_test, y_test) = mnist.load_data()
-        if K.image_data_format() == 'channels_first':
-            x_train = x_train.reshape(x_train.shape[0], 1, img_rows, img_cols)
-            x_test = x_test.reshape(x_test.shape[0], 1, img_rows, img_cols)
-            input_shape = (1, img_rows, img_cols)
-        else:
-            x_train = x_train.reshape(x_train.shape[0], img_rows, img_cols, 1)
-            x_test = x_test.reshape(x_test.shape[0], img_rows, img_cols, 1)
-            input_shape = (img_rows, img_cols, 1)
-        x_train = x_train.astype('float32')
-        x_test = x_test.astype('float32')
-        x_train /= 255
-        x_test /= 255
-        print('x_train shape:', x_train.shape)
-        # Convert class vectors to binary class matrices
-        y_train = keras.utils.to_categorical(y_train, num_classes)
-        y_test = keras.utils.to_categorical(y_test, num_classes)
         # Load model
         new_model = load_model('my_model.h5')
         print("Load model successful !!!")
         while True:
             if self.autoMode:
-                start = time.time()
-                new_img = x_test[0]
-                new_img = new_img.reshape((1, 28, 28, 1))
+                new_img = self.coming_img
+                new_img = np.asarray(bytearray(new_img), dtype=np.uint8)
+                cv2.imdecode(new_img, 0)
+                new_img = new_img.reshape((1, 128, 128, 1))
                 result = new_model.predict_classes(new_img)
-                end = time.time()
-                print("Time elapse: ", end - start)
                 print("Predict value: ", result)
-                self.signal = "3"
-                self.serial.write((self.signal + "\r\n").encode())
+#                if result == 0:
+#                  self.signal = "1"
+#                elif result == 1:
+#                  self.signal = "3"
+                
+#                self.signal = "3"
+#                self.serial.write((self.signal + "\r\n").encode())
                 sleep(1)
 
     def getInfo(self):
@@ -151,11 +122,13 @@ class App(object):
     def handleCamera(self):
         stream = io.BytesIO()
         for count, foo in enumerate(self.camera.capture_continuous(stream, format="jpeg")):
+            # Get number of bytes in the stream
+            num_of_bytes = stream.tell()
+            self.coming_img = stream.read(num_of_bytes)
             if not self.autoMode :
                 # Save stream contents to file
                 if ( (self.done == False) and ((self.signal == "1" and self.c0) or (self.signal == "3" and self.c1) or (self.signal == "4" and self.c2)) ) :
-                    # Get number of bytes in the stream
-                    num_of_bytes = stream.tell()
+
                     # Rewind the stream to start
                     stream.seek(0)
                     if self.signal == "1":
