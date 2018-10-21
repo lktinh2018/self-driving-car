@@ -46,11 +46,27 @@ class App(object):
         print("Load model successful !!!")
         while True:
             if self.autoMode:
-                new_img = self.coming_img
-                new_img = np.asarray(bytearray(new_img), dtype=np.uint8)
-                cv2.imdecode(new_img, 0)
+                
+                # 0
+                #new_img = cv2.imread("../test_data/img15.jpg", cv2.IMREAD_GRAYSCALE)
+                
+                #1
+                new_img = cv2.imdecode(np.frombuffer(self.coming_img, np.uint8), cv2.IMREAD_GRAYSCALE)
+                
+                #2
+                #nparr = np.fromstring(img_str, np.uint8)
+                #new_img = cv2.imdecode(nparr, cv2.IMREAD_GRAYSCALE) 
+
+                new_img = np.expand_dims(new_img, -1)
+                
+                new_img = np.array(new_img, dtype=np.float32)
+                
+                new_img = new_img / 255.0
+                
                 new_img = new_img.reshape((1, 128, 128, 1))
+                
                 result = new_model.predict_classes(new_img)
+                
                 print("Predict value: ", result)
 #                if result == 0:
 #                  self.signal = "1"
@@ -122,15 +138,13 @@ class App(object):
     def handleCamera(self):
         stream = io.BytesIO()
         for count, foo in enumerate(self.camera.capture_continuous(stream, format="jpeg")):
-            # Get number of bytes in the stream
-            num_of_bytes = stream.tell()
-            self.coming_img = stream.read(num_of_bytes)
             if not self.autoMode :
                 # Save stream contents to file
-                if ( (self.done == False) and ((self.signal == "1" and self.c0) or (self.signal == "3" and self.c1) or (self.signal == "4" and self.c2)) ) :
-
+                if ((self.done == False) and ((self.signal == "1" and self.c0) or (self.signal == "3" and self.c1) or (self.signal == "4" and self.c2)) ) :
                     # Rewind the stream to start
                     stream.seek(0)
+                    # Get number of bytes in the stream
+                    num_of_bytes = stream.tell()
                     if self.signal == "1":
                         save_path = "../train_data/0/img%d.jpg" % count
                     elif self.signal == "3":
@@ -143,6 +157,15 @@ class App(object):
                     # Empty the stream
                     stream.seek(0)
                     stream.truncate()
+            else:
+                # Rewind the stream to start
+                stream.seek(0)
+                # Get number of bytes in the stream
+                num_of_bytes = stream.tell()
+                self.coming_img = stream.read(num_of_bytes)
+                stream.seek(0)
+                stream.truncate()
+                print("OK OK OK")           
 
             
     def initSerial(self):
