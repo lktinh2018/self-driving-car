@@ -13,9 +13,9 @@ void executeCommand(String data) {
   if(command == "0") {
     stop();
   } else if(command == "1") {
-    forward(SPEED);
+    forward(SPEED-30);
   } else if(command == "2") {
-    reverse(SPEED);
+    reverse(SPEED-30);
   } else if(command == "3") {
     forwardLeft(SPEED);
   } else if(command == "4") {

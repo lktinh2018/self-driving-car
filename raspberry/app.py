@@ -75,7 +75,7 @@ class App(object):
         y_train = keras.utils.to_categorical(y_train, num_classes)
         y_test = keras.utils.to_categorical(y_test, num_classes)
         # Load model
-        new_model = load_model('MNIST.h5')
+        new_model = load_model('my_model.h5')
         print("Load model successful !!!")
         while True:
             if self.autoMode:
