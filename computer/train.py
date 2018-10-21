@@ -86,17 +86,19 @@ model.compile(loss='mean_squared_error', optimizer=Adam(lr=1.0e-4))
 
 model.fit(x_train, y_train, epochs=EPOCHS)
 
+#Save model
+model.save('../raspberry/my_model.h5')
+
 # Evaluate model
 # loss, acc = model.evaluate(x_test, y_test, verbose=1)
 # print('Test loss:', loss)
 # print('Test accuracy:', acc)
 
 # Predict
-
-img = x_test[2]
-img = img.reshape((1, 128, 128, 1))
-result = model.predict_classes(img)
-print(result)
+# img = x_test[2]
+# img = img.reshape((1, 128, 128, 1))
+# result = model.predict_classes(img)
+# print(result)
 
 
 
