@@ -3,9 +3,10 @@ from keras.models import load_model
 from picamera import PiCamera
 from time import sleep
 import numpy as np 
+from picamera.array import PiRGBArray
 
 class App(object):
-    
+      
     #Coming image
     coming_img = ""
     
@@ -31,7 +32,12 @@ class App(object):
 
     # Server socket var
     serverSocket = ""
-
+    
+    
+    # New Coming Image Flag
+    new_img_flag = False
+    
+    
     def __init__(self):
         self.getInfo()
         self.initSerial()
@@ -45,27 +51,24 @@ class App(object):
         new_model = load_model('my_model.h5')
         print("Load model successful !!!")
         while True:
-            if self.autoMode:
+            if self.autoMode and self.new_img_flag :
+            
+                self.coming_img = np.expand_dims(self.coming_img, -1)
                 
-                # 0
-                #new_img = cv2.imread("../test_data/img15.jpg", cv2.IMREAD_GRAYSCALE)
+                self.coming_img = np.array(self.coming_img, dtype=np.float32)
                 
-                #1
-                new_img = cv2.imdecode(np.frombuffer(self.coming_img, np.uint8), cv2.IMREAD_GRAYSCALE)
+                self.coming_img = self.coming_img / 255.0
                 
-                #2
-                #nparr = np.fromstring(img_str, np.uint8)
-                #new_img = cv2.imdecode(nparr, cv2.IMREAD_GRAYSCALE) 
-
-                new_img = np.expand_dims(new_img, -1)
+                self.coming_img = self.coming_img.reshape((1, 128, 128, 1))
                 
-                new_img = np.array(new_img, dtype=np.float32)
+                cv2.imshow('Coming Image', self.coming_img)
+                key = cv2.waitKey(1) & 0xFF
+                if  key == ord("q"):
+                   break
                 
-                new_img = new_img / 255.0
+                print(self.coming_img.shape)
                 
-                new_img = new_img.reshape((1, 128, 128, 1))
-                
-                result = new_model.predict_classes(new_img)
+                result = new_model.predict_classes(self.coming_img)
                 
                 print("Predict value: ", result)
 #                if result == 0:
@@ -75,6 +78,7 @@ class App(object):
                 
 #                self.signal = "3"
 #                self.serial.write((self.signal + "\r\n").encode())
+                self.new_img_flag = False
                 sleep(1)
 
     def getInfo(self):
@@ -137,48 +141,40 @@ class App(object):
 
     def handleCamera(self):
         stream = io.BytesIO()
-        if self.autoMode :
-            for frame in self.camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
-                image = frame.array
-                frame1 = image.astype(np.uint8)
-                img_flip = cv2.flip( frame1, -1 )
-                gray = cv2.cvtColor(img_flip, cv2.COLOR_BGR2GRAY)
-                cv2.imshow("Windows", gray)
-                cv2.waitKey(0)
-                # Rewind the stream to start
-                stream.seek(0)
-                # Get number of bytes in the stream
-                num_of_bytes = stream.tell()
-                self.coming_img = stream.read(num_of_bytes)
-                stream.seek(0)
-                stream.truncate()
-                print("111")
-                if not self.autoMode:
-                    break
-        else:
-            for count, foo in enumerate(self.camera.capture_continuous(stream, format="jpeg")):
-                # Save stream contents to file
-                if ((self.done == False) and ((self.signal == "1" and self.c0) or (self.signal == "3" and self.c1) or (self.signal == "4" and self.c2)) ) :
-                    # Rewind the stream to start
-                    stream.seek(0)
-                    # Get number of bytes in the stream
-                    num_of_bytes = stream.tell()
-                    if self.signal == "1":
-                        save_path = "../train_data/0/img%d.jpg" % count
-                    elif self.signal == "3":
-                        save_path = "../train_data/1/img%d.jpg" % count
-                    elif self.signal == "4":
-                        save_path = "../train_data/2/img%d.jpg" % count
-                    with open(save_path, "wb") as f:
-                        f.write(stream.read(num_of_bytes))
-                    self.done = True
-                    # Empty the stream
-                    stream.seek(0)
-                    stream.truncate()
-                    if self.autoMode:
-                        break
-         
-
+        rawCapture = PiRGBArray(self.camera, size=(128, 128))
+        while True:
+          if self.autoMode :
+              for frame in self.camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
+                  image = frame.array
+                  image = image.astype(np.uint8)
+                  gray_img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+                  self.coming_img = gray_img
+                  rawCapture.truncate(0)
+                  if not self.autoMode:
+                      break
+                  self.new_img_flag = True
+          else:
+              for count, foo in enumerate(self.camera.capture_continuous(stream, format="jpeg")):
+                  # Save stream contents to file
+                  if ((self.done == False) and ((self.signal == "1" and self.c0) or (self.signal == "3" and self.c1) or (self.signal == "4" and self.c2)) ) :
+                      # Rewind the stream to start
+                      stream.seek(0)
+                      # Get number of bytes in the stream
+                      num_of_bytes = stream.tell()
+                      if self.signal == "1":
+                          save_path = "../train_data/0/img%d.jpg" % count
+                      elif self.signal == "3":
+                          save_path = "../train_data/1/img%d.jpg" % count
+                      elif self.signal == "4":
+                          save_path = "../train_data/2/img%d.jpg" % count
+                      with open(save_path, "wb") as f:
+                          f.write(stream.read(num_of_bytes))
+                      self.done = True
+                      # Empty the stream
+                      stream.seek(0)
+                      stream.truncate()
+                  if self.autoMode:
+                      break
             
     def initSerial(self):
         ser = serial.Serial("/dev/ttyACM0", 115200, timeout=1)
