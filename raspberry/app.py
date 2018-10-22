@@ -137,8 +137,26 @@ class App(object):
 
     def handleCamera(self):
         stream = io.BytesIO()
-        for count, foo in enumerate(self.camera.capture_continuous(stream, format="jpeg")):
-            if not self.autoMode :
+        if self.autoMode :
+            for frame in self.camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
+                image = frame.array
+                frame1 = image.astype(np.uint8)
+                img_flip = cv2.flip( frame1, -1 )
+                gray = cv2.cvtColor(img_flip, cv2.COLOR_BGR2GRAY)
+                cv2.imshow("Windows", gray)
+                cv2.waitKey(0)
+                # Rewind the stream to start
+                stream.seek(0)
+                # Get number of bytes in the stream
+                num_of_bytes = stream.tell()
+                self.coming_img = stream.read(num_of_bytes)
+                stream.seek(0)
+                stream.truncate()
+                print("111")
+                if not self.autoMode:
+                    break
+        else:
+            for count, foo in enumerate(self.camera.capture_continuous(stream, format="jpeg")):
                 # Save stream contents to file
                 if ((self.done == False) and ((self.signal == "1" and self.c0) or (self.signal == "3" and self.c1) or (self.signal == "4" and self.c2)) ) :
                     # Rewind the stream to start
@@ -157,15 +175,9 @@ class App(object):
                     # Empty the stream
                     stream.seek(0)
                     stream.truncate()
-            else:
-                # Rewind the stream to start
-                stream.seek(0)
-                # Get number of bytes in the stream
-                num_of_bytes = stream.tell()
-                self.coming_img = stream.read(num_of_bytes)
-                stream.seek(0)
-                stream.truncate()
-                print("OK OK OK")           
+                    if self.autoMode:
+                        break
+         
 
             
     def initSerial(self):
