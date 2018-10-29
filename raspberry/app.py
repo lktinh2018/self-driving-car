@@ -143,9 +143,9 @@ class App(object):
         t.start()
 
     def handleCamera(self):
-        stream = io.BytesIO()
-        rawCapture = PiRGBArray(self.camera, size=(self.IMG_WIDTH, self.IMG_HEIGHT))
         while True:
+          stream = io.BytesIO()
+          rawCapture = PiRGBArray(self.camera, size=(self.IMG_WIDTH, self.IMG_HEIGHT))
           if self.autoMode :
               for frame in self.camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
                   image = frame.array
@@ -160,10 +160,10 @@ class App(object):
               for count, foo in enumerate(self.camera.capture_continuous(stream, format="jpeg")):
                   # Save stream contents to file
                   if ((self.done == False) and ((self.signal == "1" and self.c0) or (self.signal == "3" and self.c1) or (self.signal == "4" and self.c2)) ) :
-                      # Rewind the stream to start
-                      stream.seek(0)
                       # Get number of bytes in the stream
                       num_of_bytes = stream.tell()
+                      # Rewind the stream to start
+                      stream.seek(0)
                       if self.signal == "1":
                           save_path = "../train_data/0/img%d.jpg" % count
                       elif self.signal == "3":
