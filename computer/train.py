@@ -41,7 +41,7 @@ def load_test():
 def build_model():
 
     model = Sequential()
-    model.add(Lambda(lambda x: x/127.5-1.0, input_shape=(IMG_ROWS, IMG_COLS, 1)))
+    model.add(Lambda(lambda x: x/127.5-1.0, input_shape=(IMG_COLS, IMG_ROWS, 1)))
     model.add(Conv2D(24, 5, 5, activation='elu', subsample=(2, 2)))
     model.add(Conv2D(36, 5, 5, activation='elu', subsample=(2, 2)))
     model.add(Conv2D(48, 5, 5, activation='elu', subsample=(2, 2)))
@@ -61,7 +61,8 @@ def build_model():
     return model
 
 
-# Config 
+# Config
+print("Preparing for train model...")
 EPOCHS             = 10
 IMG_ROWS, IMG_COLS = 256, 144
 NUM_CLASSESS       = 3
