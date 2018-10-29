@@ -11,4 +11,4 @@ String command  = "";
 #define MAX_PWM 255
 #define TIME 10
 
-byte SPEED = 180;
+byte SPEED = 200;

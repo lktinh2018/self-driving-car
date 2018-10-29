@@ -37,6 +37,9 @@ class App(object):
     # New Coming Image Flag
     new_img_flag = False
     
+    # Resolution
+    IMG_WIDTH  = 256
+    IMG_HEIGHT = 144
     
     def __init__(self):
         self.getInfo()
@@ -59,7 +62,7 @@ class App(object):
                 
                 self.coming_img = self.coming_img / 255.0
                 
-                self.coming_img = self.coming_img.reshape((1, 128, 128, 1))
+                self.coming_img = self.coming_img.reshape((1, self.IMG_WIDTH, self.IMG_HEIGHT, 1))
                 
                 cv2.imshow('Coming Image', self.coming_img)
                 key = cv2.waitKey(1) & 0xFF
@@ -130,7 +133,7 @@ class App(object):
 
     def initCamera(self):
         camera = PiCamera()
-        camera.resolution = (128, 128)
+        camera.resolution = (self.IMG_WIDTH, self.IMG_HEIGHT)
         camera.framerate = 10
         camera.start_preview()
         self.camera = camera
@@ -141,7 +144,7 @@ class App(object):
 
     def handleCamera(self):
         stream = io.BytesIO()
-        rawCapture = PiRGBArray(self.camera, size=(128, 128))
+        rawCapture = PiRGBArray(self.camera, size=(self.IMG_WIDTH, self.IMG_HEIGHT))
         while True:
           if self.autoMode :
               for frame in self.camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):

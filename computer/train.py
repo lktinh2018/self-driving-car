@@ -63,7 +63,7 @@ def build_model():
 
 # Config 
 EPOCHS             = 10
-IMG_ROWS, IMG_COLS = 128, 128
+IMG_ROWS, IMG_COLS = 256, 144
 NUM_CLASSESS       = 3
 CHANNELS           = 1
 BATCH_SIZE         = 64
