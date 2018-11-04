@@ -43,11 +43,10 @@ class CameraServer(object):
                 for foo in camera.capture_continuous(stream, 'jpeg', use_video_port = True):
                     # Write the length of the capture to the stream and flush to
                     # ensure it actually gets sent
-                    connection.write(struct.pack('<L', stream.tell()))
-                    connection.flush()           
+                    connection.write(struct.pack('<L', stream.tell()))        
                     # Rewind the stream and send the image data over the wire
                     stream.seek(0)
-                    connection.write(stream.read())
+                    connection.write( (stream.read()))
                     # Reset the stream for the next capture
                     stream.seek(0)
                     stream.truncate()
