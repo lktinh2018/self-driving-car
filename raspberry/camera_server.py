@@ -31,7 +31,7 @@ class CameraServer(object):
         connection = c.makefile('wb')
         try:
             with picamera.PiCamera() as camera:
-                camera.resolution = (128, 128)
+                camera.resolution = (250, 250)
                 camera.framerate = 10
                 time.sleep(2)
 
@@ -43,16 +43,16 @@ class CameraServer(object):
                 for foo in camera.capture_continuous(stream, 'jpeg', use_video_port = True):
                     # Write the length of the capture to the stream and flush to
                     # ensure it actually gets sent
-                    connection.write(struct.pack('<L', stream.tell()))
+                    connection.write( (struct.pack('<L', stream.tell()).encode() )
                     connection.flush()           
                     # Rewind the stream and send the image data over the wire
                     stream.seek(0)
-                    connection.write(stream.read())
+                    connection.write( (stream.read()).encode() )
                     # Reset the stream for the next capture
                     stream.seek(0)
                     stream.truncate()
             # Write a length of zero to the stream to signal we're done
-            connection.write(struct.pack('<L', 0))
+            connection.write( (struct.pack('<L', 0)).encode() )
         finally:
             connection.close()
             c.close()
