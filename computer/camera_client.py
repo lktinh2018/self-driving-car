@@ -5,8 +5,6 @@ import cv2
 
 class CameraClient(object):
 
-    streamSocket = ""
-
     def __init__(self):
         self.initSocketClient()
 
@@ -22,7 +20,7 @@ class CameraClient(object):
             stream_bytes = " "
             
             while True:
-                stream_bytes += self.streamSocket.recv(1024).decode('utf-8')
+                stream_bytes += streamSocket.read(1024)
                 first = stream_bytes.find('\xff\xd8')
                 last  = stream_bytes.find('\xff\xd9')
                 if first != -1 and last != -1:
