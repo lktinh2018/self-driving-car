@@ -62,12 +62,8 @@ class App(object):
                 
                 self.coming_img = self.coming_img / 255.0
                 
-                self.coming_img = self.coming_img.reshape((1, self.IMG_WIDTH, self.IMG_HEIGHT, 1))
+                self.coming_img = self.coming_img.reshape((1, self.IMG_HEIGHT, self.IMG_WIDTH, 1))
                 
-                cv2.imshow('Coming Image', self.coming_img)
-                key = cv2.waitKey(1) & 0xFF
-                if  key == ord("q"):
-                   break
                 
                 print(self.coming_img.shape)
                 
