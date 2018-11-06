@@ -38,9 +38,10 @@ y_test = keras.utils.to_categorical(y_test, NUM_CLASSESS)
 # Main 
 new_model = load_model('test_model.h5')
 
-test_img = x_test[2].reshape((1, 144, 256, 1))
 
+for i in range(0, 10):
+    test_img = x_test[i].reshape((1, 144, 256, 1))
 
-result = new_model.predict_classes(test_img)
-
-print("Predict value: ", result)
+    #result = new_model.predict_classes(test_img)
+    result = new_model.predict(test_img)
+    print("Predict value: ", result)
