@@ -12,7 +12,7 @@ def load_test():
     print("Read test images...")
     x_test = []
     y_test = []
-    path = os.path.join("..", "test_data", "*.jpg")
+    path = os.path.join("..", "test_image", "*.jpg")
     files = glob.glob(path)
     for fl in files:
         img = get_image(fl)
@@ -20,14 +20,12 @@ def load_test():
         y_test.append(1)
     return (x_test, y_test)
 
-
 # Config
 EPOCHS             = 10
 IMG_ROWS, IMG_COLS = 256, 144
 NUM_CLASSESS       = 3
 CHANNELS           = 1
 BATCH_SIZE         = 64
-
 
 (x_test, y_test) = load_test()
 x_test  = np.expand_dims(x_test, -1)
@@ -38,10 +36,9 @@ y_test = keras.utils.to_categorical(y_test, NUM_CLASSESS)
 # Main 
 new_model = load_model('test_model.h5')
 
-
-for i in range(0, 10):
+for i in range(0, 3):
     test_img = x_test[i].reshape((1, 144, 256, 1))
-
     #result = new_model.predict_classes(test_img)
     result = new_model.predict(test_img)
     print("Predict value: ", result)
+    
