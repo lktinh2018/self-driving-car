@@ -62,27 +62,18 @@ class App(object):
                 
                 self.coming_img = self.coming_img / 255.0
                 
-                self.coming_img = self.coming_img.reshape((1, self.IMG_WIDTH, self.IMG_HEIGHT, 1))
-                
-                cv2.imshow('Coming Image', self.coming_img)
-                key = cv2.waitKey(1) & 0xFF
-                if  key == ord("q"):
-                   break
-                
-                print(self.coming_img.shape)
-                
+                self.coming_img = self.coming_img.reshape((1,  self.IMG_HEIGHT, self.IMG_WIDTH, 1))
+            
                 result = new_model.predict_classes(self.coming_img)
                 
                 print("Predict value: ", result)
-#                if result == 0:
-#                  self.signal = "1"
-#                elif result == 1:
-#                  self.signal = "3"
+               if result == 0:
+                self.signal = "1"
+               elif result == 1:
+                self.signal = "3"
                 
-#                self.signal = "3"
-#                self.serial.write((self.signal + "\r\n").encode())
+                self.serial.write((self.signal + "\r\n").encode())
                 self.new_img_flag = False
-                sleep(1)
 
     def getInfo(self):
         c0 = c1 = c2 = ""
