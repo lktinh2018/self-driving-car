@@ -75,7 +75,7 @@ def build_model():
 
 # Config
 print("Preparing for train model...")
-EPOCHS             = 10
+EPOCHS             = 100
 IMG_ROWS, IMG_COLS = 256, 144
 NUM_CLASSESS       = 3
 CHANNELS           = 1
