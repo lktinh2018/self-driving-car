@@ -56,24 +56,24 @@ class App(object):
         while True:
             if self.autoMode and self.new_img_flag :
             
-                self.coming_img = np.expand_dims(self.coming_img, -1)
-                
-                self.coming_img = np.array(self.coming_img, dtype=np.float32)
-                
-                self.coming_img = self.coming_img / 255.0
-                
-                self.coming_img = self.coming_img.reshape((1,  self.IMG_HEIGHT, self.IMG_WIDTH, 1))
-            
-                result = new_model.predict_classes(self.coming_img)
-                
-                print("Predict value: ", result)
-               if result == 0:
+              self.coming_img = np.expand_dims(self.coming_img, -1)
+              
+              self.coming_img = np.array(self.coming_img, dtype=np.float32)
+              
+              self.coming_img = self.coming_img / 255.0
+              
+              self.coming_img = self.coming_img.reshape((1,  self.IMG_HEIGHT, self.IMG_WIDTH, 1))
+          
+              result = new_model.predict_classes(self.coming_img)
+              #result = new_model.predict(self.coming_img)
+              print("Predict value: ", result)
+              if result == 0:
                 self.signal = "1"
-               elif result == 1:
+              elif result == 1:
                 self.signal = "3"
-                
-                self.serial.write((self.signal + "\r\n").encode())
-                self.new_img_flag = False
+              
+              self.serial.write((self.signal + "\r\n").encode())
+              self.new_img_flag = False
 
     def getInfo(self):
         c0 = c1 = c2 = ""
