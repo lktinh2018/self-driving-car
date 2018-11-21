@@ -54,7 +54,7 @@ def build_model():
     model.add(Conv2D(24, (5, 5), activation='elu', strides=(2, 2), input_shape=(IMG_COLS, IMG_ROWS, 1)))
 
     model.add(Conv2D(36, (5, 5), activation='elu', strides=(2, 2)))
-    model.add(Dropout(0.5)) #########################################################################################
+    #model.add(Dropout(0.5)) #########################################################################################
 
     #model.add(Conv2D(48, (5, 5), activation='elu', strides=(2, 2)))
     model.add(Conv2D(64, (3, 3), activation='elu'))
