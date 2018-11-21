@@ -74,6 +74,7 @@ class App(object):
               
               self.serial.write((self.signal + "\r\n").encode())
               self.new_img_flag = False
+        
 
     def getInfo(self):
         c0 = c1 = c2 = ""
