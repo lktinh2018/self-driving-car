@@ -20,16 +20,19 @@ Control signal:
 
 298 Shield Pinout:
 	Function	Channel A Pin		Channel B Pin
-	Direction	D12		        D13
-	PWM		D10		        D11
-	Buzzer		D4		        D4
+	Direction		D12		        D13
+	PWM				D10		        D11
+	Buzzer			D4		        D4
 
 
-Blynk virtual pin:
-	+ V0	Auto Mode
-	+ V1	Buzzer
-	+ V2	Speed
-	+ V3	X Axis
-	+ V4	Y Axis
-	
 
+- Step 1: 
+	Run raspberry/app.py from raspberrypi.
+- Step 2:
+	Run computer/rc_keyboard_client.py from computer
+- Step 3:
+	Collect image by use Up, Down, Left, Right button from PC's keyboard.
+- Step 4:
+	Run computer/trainning.py to train model from image.
+- Step 5: 
+	Re-run step 1 and 2, press left-Shift from PC's keyboard to active self driving mode.
