@@ -100,7 +100,7 @@ model.compile(loss='mean_squared_error', optimizer=Adam(lr=1.0e-4))
 model.fit(x_train, y_train, epochs=EPOCHS, shuffle=True)
 
 #Save model
-model.save('test_model.h5')
+model.save('my_model.h5')
 
 # Evaluate model
 loss = model.evaluate(x_test, y_test, verbose=1)
